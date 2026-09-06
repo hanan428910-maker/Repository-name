@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>كشري زيزو</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lalezar&family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#FBF1DE;
+    --card:#FFFCF5;
+    --red:#B5232A;
+    --red-dark:#8E1B21;
+    --green:#16523A;
+    --green-dark:#0E3B29;
+    --gold:#D8A438;
+    --ink:#2A1B12;
+    --line: rgba(42,27,18,.14);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--cream);
+    background-image:
+      radial-gradient(circle at 0 0, rgba(213,164,56,.10) 0, transparent 45%),
+      radial-gradient(circle at 100% 20%, rgba(181,35,42,.07) 0, transparent 40%);
+    color:var(--ink);
+    font-family:'Cairo',sans-serif;
+    min-height:100vh;
+    padding-bottom:110px;
+  }
+  .wrap{max-width:640px;margin:0 auto;padding:0 16px;}
+
+  /* ---------- Header / Logo ---------- */
+  header{
+    background:linear-gradient(180deg,var(--green) 0%,var(--green-dark) 100%);
+    padding:26px 16px 34px;
+    position:relative;
+    overflow:hidden;
+    border-bottom:6px solid var(--gold);
+  }
+  header::before, header::after{
+    content:"";
+    position:absolute;
+    width:180px;height:180px;
+    border-radius:50%;
+    background:rgba(255,255,255,.04);
+  }
+  header::before{top:-90px;right:-60px;}
+  header::after{bottom:-100px;left:-40px;}
+  .brand{position:relative;text-align:center;}
+  .crown{width:46px;height:auto;margin-bottom:4px;filter:drop-shadow(0 2px 2px rgba(0,0,0,.25));}
+  .logo-text{
+    font-family:'Lalezar',cursive;
+    font-size:52px;
+    line-height:1;
+    background:linear-gradient(180deg,#F6DE9A 0%, var(--gold) 55%, #B8842A 100%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    letter-spacing:1px;
+    filter:drop-shadow(0 2px 0 rgba(0,0,0,.25));
+  }
+  .tagline{
+    color:#EFE2C2;
+    font-size:13.5px;
+    margin-top:2px;
+    letter-spacing:.5px;
+  }
+  .addr-strip{
+    position:relative;
+    margin-top:16px;
+    background:rgba(0,0,0,.18);
+    border-radius:12px;
+    padding:9px 14px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:8px;
+    font-size:12.5px;
+    color:#F3E8CC;
+  }
+  .addr-strip a{color:#F6DE9A;text-decoration:none;font-weight:700;}
+
+  /* ---------- Category nav ---------- */
+  .cat-nav{
+    position:sticky; top:0; z-index:20;
+    background:var(--cream);
+    padding:12px 16px 10px;
+    display:flex;
+    gap:8px;
+    overflow-x:auto;
+    box-shadow:0 6px 10px -8px rgba(0,0,0,.25);
+    scrollbar-width:none;
+  }
+  .cat-nav::-webkit-scrollbar{display:none;}
+  .cat-pill{
+    flex:0 0 auto;
+    background:var(--card);
+    border:1.5px solid var(--line);
+    color:var(--ink);
+    padding:8px 16px;
+    border-radius:999px;
+    font-size:13.5px;
+    font-weight:700;
+    white-space:nowrap;
+    cursor:pointer;
+  }
+  .cat-pill.active{
+    background:var(--red);
+    border-color:var(--red);
+    color:#fff;
+  }
+
+  /* ---------- Sections ---------- */
+  section.cat{padding:18px 16px 4px;}
+  .cat-title{
+    display:inline-block;
+    background:var(--red);
+    color:#fff;
+    font-size:17px;
+    font-weight:800;
+    padding:7px 22px;
+    border-radius:8px;
+    margin-bottom:12px;
+    box-shadow:0 3px 0 var(--red-dark);
+  }
+  section.cat.alt .cat-title{
+    background:var(--green);
+    box-shadow:0 3px 0 var(--green-dark);
+  }
+  .note{
+    font-size:12px;
+    color:#7a6a54;
+    margin:-6px 0 10px 2px;
+  }
+
+  .item{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:12px 14px;
+    margin-bottom:9px;
+    gap:10px;
+  }
+  .item-info{flex:1;min-width:0;}
+  .item-name{font-weight:700;font-size:15px;color:var(--ink);}
+  .item-sub{font-size:11.5px;color:#8a7a63;margin-top:2px;}
+  .item-price{
+    font-family:'Lalezar',cursive;
+    font-size:19px;
+    color:var(--red);
+    min-width:50px;
+    text-align:center;
+  }
+  .item-price.ask{font-family:'Cairo',sans-serif;font-size:11.5px;font-weight:700;color:#8a7a63;}
+
+  .qty-ctrl{display:flex;align-items:center;gap:8px;}
+  .qty-btn{
+    width:30px;height:30px;
+    border-radius:50%;
+    border:none;
+    background:var(--green);
+    color:#fff;
+    font-size:18px;
+    font-weight:700;
+    display:flex;align-items:center;justify-content:center;
+    cursor:pointer;
+    line-height:0;
+  }
+  .qty-btn.minus{background:#cfc3a8;color:var(--ink);}
+  .qty-val{
+    min-width:18px;
+    text-align:center;
+    font-weight:800;
+    font-size:15px;
+  }
+
+  /* ---------- Cart bar ---------- */
+  .cart-bar{
+    position:fixed;
+    bottom:14px; left:16px; right:16px;
+    max-width:608px;
+    margin:0 auto;
+    background:var(--ink);
+    color:#fff;
+    border-radius:16px;
+    padding:13px 18px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    box-shadow:0 10px 24px rgba(0,0,0,.35);
+    z-index:30;
+    transform:translateY(120px);
+    transition:transform .35s cubic-bezier(.34,1.4,.64,1);
+  }
+  .cart-bar.show{transform:translateY(0);}
+  .cart-bar .left{display:flex;flex-direction:column;gap:1px;}
+  .cart-bar .count{font-size:12px;color:#d9cdb4;}
+  .cart-bar .total{font-family:'Lalezar',cursive;font-size:20px;color:var(--gold);}
+  .cart-bar button{
+    background:var(--red);
+    color:#fff;
+    border:none;
+    padding:10px 20px;
+    border-radius:10px;
+    font-family:'Cairo',sans-serif;
+    font-weight:800;
+    font-size:14.5px;
+    cursor:pointer;
+  }
+
+  /* ---------- Modal ---------- */
+  .overlay{
+    position:fixed;inset:0;
+    background:rgba(20,12,6,.55);
+    display:none;
+    align-items:flex-end;
+    justify-content:center;
+    z-index:50;
+  }
+  .overlay.show{display:flex;}
+  .sheet{
+    background:var(--cream);
+    width:100%;
+    max-width:640px;
+    border-radius:20px 20px 0 0;
+    padding:20px 18px 22px;
+    max-height:82vh;
+    overflow-y:auto;
+  }
+  .sheet h2{
+    font-family:'Lalezar',cursive;
+    color:var(--red);
+    font-size:24px;
+    margin:0 0 12px;
+    text-align:center;
+  }
+  .sheet-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:9px 0;
+    border-bottom:1px dashed var(--line);
+    font-size:14.5px;
+  }
+  .sheet-row .sr-name{font-weight:700;}
+  .sheet-total{
+    display:flex;justify-content:space-between;
+    font-weight:800;font-size:17px;
+    margin-top:12px;padding-top:10px;
+    border-top:2px solid var(--ink);
+  }
+  .field{margin-top:14px;}
+  .field label{font-size:13px;font-weight:700;display:block;margin-bottom:5px;}
+  .field select, .field input{
+    width:100%;
+    padding:10px 12px;
+    border-radius:10px;
+    border:1.5px solid var(--line);
+    font-family:'Cairo',sans-serif;
+    font-size:14px;
+    background:#fff;
+  }
+  .sheet-actions{display:flex;gap:10px;margin-top:18px;}
+  .sheet-actions button{
+    flex:1;
+    padding:13px;
+    border-radius:12px;
+    border:none;
+    font-weight:800;
+    font-size:14.5px;
+    cursor:pointer;
+    font-family:'Cairo',sans-serif;
+  }
+  .btn-close{background:#e7dcc2;color:var(--ink);}
+  .btn-send{background:var(--green);color:#fff;}
+  .empty-cart{text-align:center;color:#8a7a63;padding:20px 0;font-size:14px;}
+
+  footer{
+    text-align:center;
+    padding:26px 16px 6px;
+    color:#8a7a63;
+    font-size:12px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <svg class="crown" viewBox="0 0 100 70" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="5,60 15,20 32,42 50,10 68,42 85,20 95,60" fill="#D8A438" stroke="#8E661E" stroke-width="2"/>
+      <rect x="5" y="58" width="90" height="10" rx="3" fill="#D8A438" stroke="#8E661E" stroke-width="2"/>
+      <circle cx="15" cy="18" r="5" fill="#E9C46A"/>
+      <circle cx="50" cy="8" r="6" fill="#E9C46A"/>
+      <circle cx="85" cy="18" r="5" fill="#E9C46A"/>
+    </svg>
+    <div class="logo-text">كشري زيزو</div>
+    <div class="tagline">طعم بلدي.. أوردر في ثانية</div>
+  </div>
+  <div class="addr-strip">
+    <span>📍 ديمشلت - الموقف - بجوار صيدلية د. أيمن عبد السلام ندا</span>
+  </div>
+  <div class="addr-strip">
+    <span>🛵 يوجد توصيل للمنازل</span>
+    <a href="tel:01006843494">01006843494</a>
+  </div>
+</header>
+
+<nav class="cat-nav" id="catNav"></nav>
+
+<div class="wrap" id="menuRoot"></div>
+
+<div class="cart-bar" id="cartBar">
+  <div class="left">
+    <span class="count" id="cartCount">0 صنف</span>
+    <span class="total" id="cartTotal">0 ج.م</span>
+  </div>
+  <button id="openCart">اطلب الآن</button>
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="sheet">
+    <h2>طلبك</h2>
+    <div id="sheetItems"></div>
+    <div class="sheet-total"><span>الإجمالي</span><span id="sheetTotal">0 ج.م</span></div>
+
+    <div class="field">
+      <label>طريقة الاستلام</label>
+      <select id="orderType">
+        <option value="توصيل للمنزل">توصيل للمنزل 🛵</option>
+        <option value="استلام من المحل">استلام من المحل 🏠</option>
+      </select>
+    </div>
+    <div class="field" id="addrField">
+      <label>العنوان</label>
+      <input type="text" id="addrInput" placeholder="اكتب عنوانك بالتفصيل">
+    </div>
+    <div class="field">
+      <label>اسمك</label>
+      <input type="text" id="nameInput" placeholder="الاسم">
+    </div>
+    <div class="field">
+      <label>رقم تليفونك</label>
+      <input type="tel" id="phoneInput" placeholder="01xxxxxxxxx" inputmode="numeric">
+    </div>
+
+    <div class="sheet-actions">
+      <button class="btn-close" id="closeSheet">رجوع</button>
+      <button class="btn-send" id="sendOrder">إرسال الطلب واتساب 💬</button>
+    </div>
+  </div>
+</div>
+
+<footer>كشري زيزو &middot; ديمشلت &middot; 01006843494</footer>
+
+<script>
+const MENU = [
+  { id:"tagen", title:"الطواجن", alt:false, items:[
+    {n:"طاجن مكرونة بالفراخ", p:45},
+    {n:"طاجن مكرونة باللحمة", p:50},
+    {n:"طاجن مكرونة بالفراخ - موزاريلا", p:60},
+    {n:"طاجن مكرونة باللحمة - موزاريلا", p:65},
+  ]},
+  { id:"grill", title:"الفراخ المشوية", alt:true, note:"يوجد فراخ مشوية طازة يوميًا", items:[
+    {n:"شوي الفرخة (تجهيز)", p:45},
+    {n:"ربع فرخة بالسلطات", p:null},
+    {n:"نصف فرخة بالسلطات", p:null},
+    {n:"فرخة كاملة بالسلطات", p:null},
+    {n:"وجبة كشري + ربع فرخة بالسلطات", p:100},
+  ]},
+  { id:"kebda", title:"الكبدة", alt:false, items:[
+    {n:"طبق كبدة بالسلطات (صغير)", p:50},
+    {n:"طبق كبدة بالسلطات (كبير)", p:75},
+    {n:"سندوتش بالكبدة", p:25},
+  ]},
+  { id:"koshary-plain", title:"كشري سادة", alt:true, items:[
+    {n:"علبة زيرو وكيدز", p:15},
+    {n:"علبة زيرو صغير", p:25},
+    {n:"علبة زيرو وسط", p:35},
+    {n:"علبة زيرو كبير", p:45},
+    {n:"علبة زيرو جامبو", p:55},
+  ]},
+  { id:"koshary-kebda", title:"كشري بالكبدة", alt:false, items:[
+    {n:"علبة زيرو سوبر", p:40},
+    {n:"علبة زيرو ستار", p:55},
+    {n:"علبة زيرو القنبلة", p:70},
+  ]},
+  { id:"koshary-lahma", title:"كشري باللحمة", alt:true, items:[
+    {n:"علبة زيرو سوبر", p:40},
+    {n:"علبة زيرو ستار", p:55},
+    {n:"علبة زيرو القنبلة", p:70},
+  ]},
+  { id:"koshary-shawerma", title:"كشري بالفراخ شاورما", alt:false, items:[
+    {n:"علبة زيرو سوبر", p:35},
+    {n:"علبة زيرو ستار", p:50},
+    {n:"علبة زيرو القنبلة", p:65},
+  ]},
+  { id:"drinks", title:"المشروبات", alt:true, items:[
+    {n:"كانز جيب", p:15},
+    {n:"مياة معدنية صغيرة", p:5},
+    {n:"مياة معدنية كبيرة", p:10},
+    {n:"عيش توست بالكاتشب", p:5},
+  ]},
+  { id:"sweet", title:"الحلو", alt:false, items:[
+    {n:"أرز باللبن عادي", p:15},
+    {n:"أرز باللبن فرن", p:20},
+  ]},
+];
+
+const cart = {}; // key -> {name, price, qty}
+
+function keyFor(catId, name){ return catId+"|"+name; }
+
+let suppressSpy = false;
+
+function setActivePill(id){
+  document.querySelectorAll('.cat-pill').forEach(p=>{
+    p.classList.toggle('active', p.dataset.target===id);
+  });
+}
+
+function renderNav(){
+  const nav = document.getElementById('catNav');
+  nav.innerHTML = MENU.map((c,i)=>`<div class="cat-pill${i===0?' active':''}" data-target="${c.id}">${c.title}</div>`).join('');
+  nav.querySelectorAll('.cat-pill').forEach(pill=>{
+    pill.addEventListener('click', ()=>{
+      setActivePill(pill.dataset.target);
+      pill.scrollIntoView({behavior:'smooth', block:'nearest', inline:'center'});
+      suppressSpy = true;
+      document.getElementById(pill.dataset.target).scrollIntoView({behavior:'smooth', block:'start'});
+      setTimeout(()=>{ suppressSpy = false; }, 700);
+    });
+  });
+}
+
+function setupScrollSpy(){
+  const sections = MENU.map(c=>document.getElementById(c.id));
+  const observer = new IntersectionObserver((entries)=>{
+    if(suppressSpy) return;
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        setActivePill(entry.target.id);
+        const pill = document.querySelector(`.cat-pill[data-target="${entry.target.id}"]`);
+        if(pill) pill.scrollIntoView({behavior:'smooth', block:'nearest', inline:'center'});
+      }
+    });
+  }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
+  sections.forEach(s=> s && observer.observe(s));
+}
+
+function renderMenu(){
+  const root = document.getElementById('menuRoot');
+  root.innerHTML = MENU.map(cat=>`
+    <section class="cat${cat.alt?' alt':''}" id="${cat.id}">
+      <div class="cat-title">${cat.title}</div>
+      ${cat.note?`<div class="note">${cat.note}</div>`:''}
+      ${cat.items.map(it=>{
+        const k = keyFor(cat.id, it.n);
+        const priceHtml = it.p===null ? `<span class="item-price ask">السعر عند الطلب</span>` : `<span class="item-price">${it.p}</span>`;
+        return `
+        <div class="item" data-key="${k}" data-name="${it.n}" data-price="${it.p===null?'':it.p}">
+          <div class="item-info">
+            <div class="item-name">${it.n}</div>
+          </div>
+          ${priceHtml}
+          <div class="qty-ctrl">
+            <button class="qty-btn minus" data-act="minus">−</button>
+            <span class="qty-val">0</span>
+            <button class="qty-btn plus" data-act="plus">+</button>
+          </div>
+        </div>`;
+      }).join('')}
+    </section>
+  `).join('');
+
+  root.querySelectorAll('.item').forEach(row=>{
+    const key = row.dataset.key;
+    const name = row.dataset.name;
+    const price = row.dataset.price === '' ? null : parseFloat(row.dataset.price);
+    const qtyEl = row.querySelector('.qty-val');
+    row.querySelectorAll('.qty-btn').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        if(price===null){
+          alert('السعر لهذا الصنف يتحدد عند الطلب — هنأكد لك السعر في المكالمة. تقدر تضيفه وتكمل باقي الطلب.');
+        }
+        let cur = cart[key] || {name, price: price||0, qty:0};
+        if(btn.dataset.act==='plus') cur.qty++;
+        else cur.qty = Math.max(0, cur.qty-1);
+        if(cur.qty===0) delete cart[key]; else cart[key]=cur;
+        qtyEl.textContent = cur.qty || 0;
+        updateCartBar();
+      });
+    });
+  });
+}
+
+function updateCartBar(){
+  const keys = Object.keys(cart);
+  const count = keys.reduce((s,k)=>s+cart[k].qty,0);
+  const total = keys.reduce((s,k)=>s+cart[k].qty*cart[k].price,0);
+  document.getElementById('cartCount').textContent = count+" صنف";
+  document.getElementById('cartTotal').textContent = total+" ج.م";
+  document.getElementById('cartBar').classList.toggle('show', count>0);
+}
+
+function renderSheet(){
+  const keys = Object.keys(cart);
+  const box = document.getElementById('sheetItems');
+  if(keys.length===0){
+    box.innerHTML = `<div class="empty-cart">الطلب فاضي.. اختار من المنيو الأول 😋</div>`;
+  } else {
+    box.innerHTML = keys.map(k=>{
+      const it = cart[k];
+      return `<div class="sheet-row"><span class="sr-name">${it.name} × ${it.qty}</span><span>${it.qty*it.price} ج.م</span></div>`;
+    }).join('');
+  }
+  const total = keys.reduce((s,k)=>s+cart[k].qty*cart[k].price,0);
+  document.getElementById('sheetTotal').textContent = total+" ج.م";
+}
+
+document.getElementById('openCart').addEventListener('click', ()=>{
+  renderSheet();
+  document.getElementById('overlay').classList.add('show');
+});
+document.getElementById('closeSheet').addEventListener('click', ()=>{
+  document.getElementById('overlay').classList.remove('show');
+});
+document.getElementById('orderType').addEventListener('change', (e)=>{
+  document.getElementById('addrField').style.display = e.target.value==='توصيل للمنزل'?'block':'none';
+});
+
+document.getElementById('sendOrder').addEventListener('click', ()=>{
+  const keys = Object.keys(cart);
+  if(keys.length===0){ alert('اختار أصناف الأول 🙏'); return; }
+  const name = document.getElementById('nameInput').value.trim();
+  const phone = document.getElementById('phoneInput').value.trim();
+  const type = document.getElementById('orderType').value;
+  const addr = document.getElementById('addrInput').value.trim();
+  if(!phone){ alert('اكتب رقم تليفونك عشان نقدر نأكد الطلب 📞'); return; }
+  let msg = `أهلاً كشري زيزو 👑%0aطلب جديد:%0a`;
+  keys.forEach(k=>{
+    const it = cart[k];
+    msg += `- ${it.name} × ${it.qty} = ${it.qty*it.price} ج.م%0a`;
+  });
+  const total = keys.reduce((s,k)=>s+cart[k].qty*cart[k].price,0);
+  msg += `الإجمالي: ${total} ج.م%0a`;
+  msg += `طريقة الاستلام: ${type}%0a`;
+  if(type==='توصيل للمنزل') msg += `العنوان: ${addr||'—'}%0a`;
+  if(name) msg += `الاسم: ${name}%0a`;
+  msg += `رقم التليفون للتواصل: ${phone}%0a`;
+  window.open(`https://wa.me/201006843494?text=${msg}`, '_blank');
+});
+
+renderNav();
+renderMenu();
+setupScrollSpy();
+</script>
+
+</body>
+</html>
